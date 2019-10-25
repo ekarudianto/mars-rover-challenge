@@ -1,24 +1,30 @@
 import Rover, { INSTRUCTION } from '../Rover';
 
 export function getMarsRoverCoordinate(
-  x, 
-  y, 
-  xRoverStarting, 
-  yRoverStarting, 
-  point, 
-  movements
+  marsPlateau, 
+  instructions,
   ) {
-  const plateau = [x, y];
-  const steps = movements.split('');
-  const rover = new Rover(xRoverStarting, yRoverStarting, point);
+  const plateau = marsPlateau.split(' ');
+  const finalCoordiantes = [];
 
-  steps.forEach(step => {
-    if (step === INSTRUCTION.LEFT || step === INSTRUCTION.RIGHT) {
-      rover.setDirection(step);
-    } else if (step === INSTRUCTION.MOVE) {
-      rover.move(plateau);
-    }
+  instructions.forEach(value => {
+    const instruction = value.split(' ');
+    const x = instruction[0];
+    const y = instruction[1];
+    const point = instruction[2];
+    const steps = instruction[3].split('');
+
+    const rover = new Rover(x, y, point);
+    steps.forEach(step => {
+      if (step === INSTRUCTION.LEFT || step === INSTRUCTION.RIGHT) {
+        rover.setDirection(step);
+      } else if (step === INSTRUCTION.MOVE) {
+        rover.move(plateau);
+      }
+    });
+
+    finalCoordiantes.push(rover.toString());
   });
-
-  return rover.toString();
+  
+  return finalCoordiantes;
 }
